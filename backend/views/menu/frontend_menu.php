@@ -2,12 +2,12 @@
 /* @var $menu string */
 use \backend\models\Menu;
 use \yii\helpers\Url;
-$this->title = "后台菜单";
+$this->title = "前台菜单";
 $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
 ?>
 <div class="page-content-wrap">
     <div class="layui-inline tool-btn">
-        <a href="<?=Url::to(['menu/admin-menu-add'])?>"  class="layui-btn layui-btn-small layui-btn-normal hidden-xs"><i class="layui-icon">&#xe654;</i></a>
+        <button id="menu-add" class="layui-btn layui-btn-small layui-btn-normal addBtn hidden-xs"><i class="layui-icon">&#xe654;</i></button>
         <button class="layui-btn layui-btn-small layui-btn-danger delBtn hidden-xs"><i class="layui-icon">&#xe640;</i></button>
     </div>
     <div class="layui-form" id="table-list">
@@ -58,9 +58,9 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
                 </td>
                 <td>
                     <div class="layui-inline">
-                        <a href="<?=Url::to(['menu/admin-menu-add','pid'=>$m['id']])?>" class="layui-btn layui-btn-mini layui-btn-normal  add-btn" data-id="<?=$m['id']?>" data-url="menu-add.html"><i class="layui-icon">&#xe654;</i></a>
-                        <a href="<?=Url::to(['menu/admin-menu-add','id'=>$m['id']])?>" class="layui-btn layui-btn-mini layui-btn-normal  edit-btn" data-id="<?=$m['id']?>" data-url="menu-add.html"><i class="layui-icon">&#xe642;</i></a>
-                        <a href="<?=Url::to(['menu/admin-menu-del','id'=>$m['id']]);?>" class="layui-btn layui-btn-mini layui-btn-danger del-btn" data-id="<?=$m['id']?>" data-url="menu-add.html"><i class="layui-icon">&#xe640;</i></a>
+                        <a href="<?=Url::to(['menu/frontend-menu-add','pid'=>$m['id']])?>" class="layui-btn layui-btn-mini layui-btn-normal  add-btn" data-id="<?=$m['id']?>" data-url="menu-add.html"><i class="layui-icon">&#xe654;</i></a>
+                        <a href="<?=Url::to(['menu/frontend-menu-add','id'=>$m['id']])?>" class="layui-btn layui-btn-mini layui-btn-normal  edit-btn" data-id="<?=$m['id']?>" data-url="menu-add.html"><i class="layui-icon">&#xe642;</i></a>
+                        <a href="<?=Url::to(['menu/frontend-menu-del','id'=>$m['id']]);?>" class="layui-btn layui-btn-mini layui-btn-danger del-btn" data-id="<?=$m['id']?>" data-url="menu-add.html"><i class="layui-icon">&#xe640;</i></a>
                     </div>
                 </td>
             </tr>
@@ -94,6 +94,9 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
             }
 
         })
+    });
+    $("#menu-add").click(function (){
+        window.location.href = "<?=Url::to(['menu/frontend-menu-add'])?>";
     });
     $(".table-list-status").click(function (){
         var That = $(this);
@@ -132,7 +135,7 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
             ids.push($(this).val());
         });
         $.ajax({
-            url:"<?=Url::to(['menu/del-all'])?>",
+            url:"<?=Url::to(['menu/frontend-menu-del'])?>",
             data:{"id":ids},
             dataType: "json",
             type: "get",

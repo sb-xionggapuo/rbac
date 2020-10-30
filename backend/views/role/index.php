@@ -1,13 +1,13 @@
 <?php
-/* @var $menu string */
-use \backend\models\Menu;
+/* @var $model string */
+use \common\models\Role;
 use \yii\helpers\Url;
-$this->title = "后台菜单";
+$this->title = "rbac-角色管理";
 $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
 ?>
 <div class="page-content-wrap">
     <div class="layui-inline tool-btn">
-        <a href="<?=Url::to(['menu/admin-menu-add'])?>"  class="layui-btn layui-btn-small layui-btn-normal hidden-xs"><i class="layui-icon">&#xe654;</i></a>
+        <a href="<?=Url::to(['role/add'])?>" class="layui-btn layui-btn-small layui-btn-normal addBtn hidden-xs"><i class="layui-icon">&#xe654;</i></a>
         <button class="layui-btn layui-btn-small layui-btn-danger delBtn hidden-xs"><i class="layui-icon">&#xe640;</i></button>
     </div>
     <div class="layui-form" id="table-list">
@@ -15,7 +15,6 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
             <colgroup>
                 <col width="50">
                 <col class="hidden-xs" width="50">
-                <col class="hidden-xs" width="100">
                 <col class="hidden-xs" width="200">
                 <col>
                 <col width="80">
@@ -25,42 +24,39 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
             <tr>
                 <th id="allChoose"><input id="choose" type="checkbox" lay-skin="primary" lay-filter="allChoose"></th>
                 <th class="hidden-xs">ID</th>
-                <th class="hidden-xs">排序</th>
-                <th class="hidden-xs">路由</th>
-                <th>菜单名称</th>
+                <th class="hidden-xs">名称</th>
+                <th>描述</th>
                 <th>状态</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($menu as $m){?>
+            <?php foreach ($model as $m){?>
             <tr id='node-<?=$m['id']?>' class="<?php if ($m['parent_id']!=0){
                 echo "child-node-".$m['parent_id'];
             }?> parent collapsed" style="<?php if($m['parent_id']!=0)echo 'display:none ;';?>"<?php if($m['parent_id']!=0){
-                $id = Menu::getGrandfather($m['parent_id']);
+                $id = Role::getGrandfather($m['parent_id']);
                 echo "parentid=".$id;
             }?> >
                 <td><input type="checkbox" name="primary_id" lay-skin="primary" data-id="<?=$m['id']?>" value="<?=$m['id']?>"></td>
                 <td class="hidden-xs"><?=$m['id']?></td>
-                <td class="hidden-xs"><input type="text" name="sort" autocomplete="off" class="layui-input" value="<?=$m['sort']?>" data-id="<?=$m['id']?>"></td>
-                <td class="hidden-xs"><?=$m['name']?></td>
-                <td><?=$m['tree']?><?=$m['title']?>
-                    <?php if (Menu::IsParentMenu($m['id'])){?>
+                <td><?=$m['tree']?><?=$m['name']?>
+                    <?php if (Role::IsParentMenu($m['id'])){?>
                         <a class="layui-btn layui-btn-mini layui-btn-normal showSubBtn" data-id='<?=$m['id']?>'>+</a>
-                    <?}?>
-                </td>
+                    <?}?></td>
+                <td><?=$m['describe']?></td>
                 <td data-id="<?=$m['id']?>">
                     <?php if ($m['status']==1){?>
-                        <button class="layui-btn layui-btn-mini layui-btn-normal table-list-status" status-flag="<?=$m['status']?>">显示</button>
+                        <button class="layui-btn layui-btn-mini layui-btn-normal table-list-status" status-flag="<?=$m['status']?>">启用</button>
                     <?php }else{?>
-                        <button class="layui-btn layui-btn-mini layui-btn-warm table-list-status" status-flag="<?=$m['status']?>">隐藏</button>
+                        <button class="layui-btn layui-btn-mini layui-btn-warm table-list-status" status-flag="<?=$m['status']?>">禁用</button>
                     <?php }?>
                 </td>
                 <td>
                     <div class="layui-inline">
-                        <a href="<?=Url::to(['menu/admin-menu-add','pid'=>$m['id']])?>" class="layui-btn layui-btn-mini layui-btn-normal  add-btn" data-id="<?=$m['id']?>" data-url="menu-add.html"><i class="layui-icon">&#xe654;</i></a>
-                        <a href="<?=Url::to(['menu/admin-menu-add','id'=>$m['id']])?>" class="layui-btn layui-btn-mini layui-btn-normal  edit-btn" data-id="<?=$m['id']?>" data-url="menu-add.html"><i class="layui-icon">&#xe642;</i></a>
-                        <a href="<?=Url::to(['menu/admin-menu-del','id'=>$m['id']]);?>" class="layui-btn layui-btn-mini layui-btn-danger del-btn" data-id="<?=$m['id']?>" data-url="menu-add.html"><i class="layui-icon">&#xe640;</i></a>
+                        <a href="<?=Url::to(['role/add','pid'=>$m['id']])?>" class="layui-btn layui-btn-mini layui-btn-normal  add-btn" data-id="<?=$m['id']?>" data-url="menu-add.html"><i class="layui-icon">&#xe654;</i></a>
+                        <a href="<?=Url::to(['role/add','id'=>$m['id']])?>" class="layui-btn layui-btn-mini layui-btn-normal  edit-btn" data-id="<?=$m['id']?>" data-url="menu-add.html"><i class="layui-icon">&#xe642;</i></a>
+                        <a href="<?=Url::to(['role/del','id'=>$m['id']]);?>" class="layui-btn layui-btn-mini layui-btn-danger del-btn" data-id="<?=$m['id']?>" data-url="menu-add.html"><i class="layui-icon">&#xe640;</i></a>
                     </div>
                 </td>
             </tr>
@@ -106,16 +102,16 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
         var id = That.parent().attr('data-id');
         var csrf = $("#csrf").val();
         $.ajax({
-           url:"<?=Url::to(['menu/admin-menu-edit-status'])?>",
+           url:"<?=Url::to(['role/edit-status'])?>",
            type:"post",
            dataType:"json",
-           data:{"Menu[id]":id,"Menu[status]":status,'_csrf-backend':csrf},
+           data:{"id":id,"status":status,'_csrf-backend':csrf},
             success:function (data){
                if (data.code ==1){
                     if (data.data==1){
-                        That.removeClass('layui-btn-warm').addClass('layui-btn-normal').html('显示').attr('status-flag', 1);
+                        That.removeClass('layui-btn-warm').addClass('layui-btn-normal').html('启用').attr('status-flag', 1);
                     }else{
-                        That.removeClass('layui-btn-normal').addClass('layui-btn-warm').html('隐藏').attr('status-flag', 0);
+                        That.removeClass('layui-btn-normal').addClass('layui-btn-warm').html('禁用').attr('status-flag', 0);
                     }
                }else{
                    layui.alert("修改失败",{
@@ -132,7 +128,7 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
             ids.push($(this).val());
         });
         $.ajax({
-            url:"<?=Url::to(['menu/del-all'])?>",
+            url:"<?=Url::to(['role/del-all'])?>",
             data:{"id":ids},
             dataType: "json",
             type: "get",
@@ -153,6 +149,7 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
                 }
             }
         });
+        // setTimeout(window.location.reload(),2000);
     });
     $("#allChoose").click(function (){
         if ($("#choose").prop("checked") == true){
@@ -163,24 +160,5 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
             $(".layui-form-checkbox").removeClass("layui-form-checked");
         }
     });
-    $("input[name='sort']").blur(function (){
-        var sort = $(this).val();
-        var id = $(this).attr("data-id");
-        var csrf = $("#csrf").val();
-        $.ajax({
-            url:"<?=Url::to(['menu/edit-sort'])?>",
-            data:{"id":id,"sort":sort,"_csrf-backend":csrf},
-            dataType:"json",
-            type:"post",
-            success:function (data){
-                if (data.code==0){
-                    layer.msg("修改失败",{
-                        icon:5,
-                        time:1000,
-                        title:"排序修改提示"
-                    })
-                }
-            }
-        })
-    });
+
 </script>

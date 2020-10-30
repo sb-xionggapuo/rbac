@@ -1,7 +1,7 @@
 <?php
 namespace backend\models;
 
-use phpDocumentor\Reflection\Types\Integer;
+use common\HelpFunction\Tree;
 use yii\db\Exception;
 
 class Menu extends \yii\db\ActiveRecord
@@ -33,21 +33,10 @@ class Menu extends \yii\db\ActiveRecord
      * @param $notPid 菜单查询出来 不包含的菜单 及子菜单
      * @return array|mixed
      */
-    public static function getTree($notPid=null){
-        $model = static::find()->where("status!=-1")->andFilterWhere(['<>','id',$notPid])->orderBy("sort DESC")->asArray()->all();
-        $tree = static::tidyTree($model);
-        return $tree;
+    public static function getTree($flag,$notPid=null){
+        $model = static::find()->where("status!=-1")->andWhere(['flag'=>$flag])->andFilterWhere(['<>','id',$notPid])->orderBy("sort DESC")->asArray()->all();
+        return Tree::tidyTree($model);
     }
-    public static function tidyTree(array $arr,$parent_id=0,&$arrBox=[]){
-        foreach ($arr as $a){
-            if ($a['parent_id']==$parent_id){
-                array_push($arrBox,$a);
-                static::tidyTree($arr,$a['id'],$arrBox);
-            }
-        }
-        return $arrBox;
-    }
-
     /**
      * 使用前请先$model->load()
      * specification:添加后台菜单
@@ -55,7 +44,7 @@ class Menu extends \yii\db\ActiveRecord
      * date:2020/10/27 16:48
      * @return bool
      */
-    public function add(){
+    public function add($flag=10){
         if ($this->parent_id ==0){
             $this->level    =   1;
             $this->tree     =   "|_ _ ";
@@ -64,7 +53,8 @@ class Menu extends \yii\db\ActiveRecord
             $this->level    =   $parent->level+1;
             $this->tree     =   $parent->tree."_ _ ";
         }
-        return $this->save()?true:false;
+        $this->flag = $flag;
+        return $this->save();
     }
 
     /**
@@ -119,7 +109,7 @@ class Menu extends \yii\db\ActiveRecord
             }
         }
         $model = self::findOne($id);
-        $model->status=-1;
-        return $model->save()?true:false;
+        $model->status= -1;
+        return $model->save();
     }
 }

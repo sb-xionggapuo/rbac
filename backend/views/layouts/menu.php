@@ -1,5 +1,6 @@
 <?php
 use \yii\helpers\Html;
+use \yii\helpers\Url;
 /* @var $content string */
     $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
 ?>
@@ -19,6 +20,7 @@ use \yii\helpers\Html;
     <script src="<?=$baseUrl?>/js/jquery-3.3.1.min.js"></script>
     <script src="<?=$baseUrl?>/layui/layui.js" type="text/javascript" charset="utf-8"></script>
     <script src="<?=$baseUrl?>/js/common.js" type="text/javascript" charset="utf-8"></script>
+    <script src="<?=$baseUrl?>/js/module/dialog.js" type="text/javascript" charset="utf-8"></script>
     <script src="<?=$baseUrl?>/js/main.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
@@ -32,8 +34,8 @@ use \yii\helpers\Html;
             <li class="layui-nav-item layui-nav-itemed">
                 <a href="javascript:;"><i class="iconfont">&#xe607;</i>菜单管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="<?=\yii\helpers\Url::to(['/menu/admin-menu'])?>" data-url="menu1.html" data-id='1' data-text="后台菜单"><span class="l-line"></span>后台菜单</a></dd>
-                    <dd><a href="javascript:;" data-url="menu2.html" data-id='2' data-text="前台菜单"><span class="l-line"></span>前台菜单</a></dd>
+                    <dd><a href="<?=\yii\helpers\Url::to(['/menu/admin-menu'])?>" data-id='1' data-text="后台菜单"><span class="l-line"></span>后台菜单</a></dd>
+                    <dd><a href="<?=\yii\helpers\Url::to(['/menu/frontend-menu'])?>" data-id='2' data-text="前台菜单"><span class="l-line"></span>前台菜单</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">
@@ -50,7 +52,7 @@ use \yii\helpers\Html;
                 <a href="javascript:;"><i class="iconfont">&#xe60c;</i>友情链接</a>
             </li>
             <li class="layui-nav-item">
-                <a href="javascript:;"><i class="iconfont">&#xe60a;</i>RBAC</a>
+                <a href="<?=Url::to(['role/index'])?>"><i class="iconfont">&#xe60a;</i>RBAC</a>
             </li>
             <li class="layui-nav-item">
                 <a href="javascript:;" data-url="email.html" data-id='4' data-text="邮件系统"><i class="iconfont">&#xe603;</i>邮件系统</a>
