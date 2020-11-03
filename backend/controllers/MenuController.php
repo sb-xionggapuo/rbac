@@ -11,7 +11,6 @@ use yii\web\Controller;
 
 class MenuController extends Controller
 {
-    public $layout = "menu";
 
     /**
      * specification:后台菜单首页

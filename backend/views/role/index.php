@@ -3,6 +3,7 @@
 use \common\models\Role;
 use \yii\helpers\Url;
 $this->title = "rbac-角色管理";
+$this->params['tab'] = "角色管理";
 $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
 ?>
 <div class="page-content-wrap">

@@ -46,10 +46,10 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
         <div class="layui-form-item">
             <label class="layui-form-label">权限：</label>
             <div class="layui-input-block">
-                <div id="LAY-auth-tree-index"></div>
+                <div style="display: inline-block" id="LAY-auth-tree-index"></div> <span style="color: red">必选*</span>
             </div>
-
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label">状态：</label>
             <div class="layui-input-block">

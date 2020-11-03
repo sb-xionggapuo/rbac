@@ -3,6 +3,7 @@
 use \backend\models\Menu;
 use \yii\helpers\Url;
 $this->title = "前台菜单";
+$this->params['tab'] = "前台菜单";
 $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
 ?>
 <div class="page-content-wrap">

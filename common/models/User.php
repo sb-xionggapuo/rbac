@@ -30,6 +30,8 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
+    const IDENTITY_FRONTEND = 1;
+    const IDENTITY_ADMIN = 2;
 
 
     /**
@@ -226,6 +228,11 @@ class User extends ActiveRecord implements IdentityInterface
            return true;
        }
        return false;
+    }
+
+
+    public function getLastLoginTime(){
+        return date("Y-m-d H:i:s",$this->last_login_time);
     }
 
 }

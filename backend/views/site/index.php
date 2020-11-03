@@ -1,5 +1,6 @@
 <?php
 $this->title = "后台首页";
+$this->params['tab'] = '后台主页';
 ?>
 <div class="wrap-container welcome-container">
     <div class="row">

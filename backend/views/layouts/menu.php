@@ -41,8 +41,15 @@ use \yii\helpers\Url;
             <li class="layui-nav-item">
                 <a href="javascript:;"><i class="iconfont">&#xe608;</i>内容管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="javascript:;" data-url="article-list.html" data-id='3' data-text="文章管理"><span class="l-line"></span>文章管理</a></dd>
-                    <dd><a href="javascript:;" data-url="danye-list.html" data-id='9' data-text="单页管理"><span class="l-line"></span>单页管理</a></dd>
+                    <dd><a href="javascript:;"  data-id='3' data-text="文章管理"><span class="l-line"></span>文章管理</a></dd>
+                    <dd><a href="javascript:;"  data-id='9' data-text="单页管理"><span class="l-line"></span>单页管理</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;"><i class="iconfont">&#xe608;</i>用户管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="<?=Url::to(['user/frontend-index'])?>"  data-id='3' data-text="前台用户"><span class="l-line"></span>前台用户</a></dd>
+                    <dd><a href="<?=Url::to(['user/admin-index'])?>"  data-id='9' data-text="管理员用户"><span class="l-line"></span>管理员用户</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">
@@ -93,7 +100,7 @@ use \yii\helpers\Url;
             <!--tab 切换-->
             <div class="layui-tab layui-tab-brief main-layout-tab" lay-filter="tab" lay-allowClose="true">
                 <ul class="layui-tab-title">
-                    <li class="layui-this welcome">后台主页</li>
+                    <li class="layui-this welcome"><?=empty($this->params['tab'])?"":$this->params['tab']?></li>
                 </ul>
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show" style="background: #f5f5f5;">

@@ -16,11 +16,6 @@ use yii\web\Response;
 class RoleController extends Controller
 {
     /**
-     * @var string 输出模板
-     */
-    public $layout = 'menu';
-
-    /**
      * specification:rbac首页
      * author:何文杰
      * date:2020/10/30 10:48
@@ -69,7 +64,7 @@ class RoleController extends Controller
             $parent_id  = $model->parent_id;
         }
         $params = \Yii::$app->request->getBodyParams();
-        if ($model->load($params)&&$model->add($params['Role']['jurisdiction'])){
+        if ($model->load($params)&&!empty($params['Role']['jurisdiction'])&&$model->add($params['Role']['jurisdiction'])){
                 return $this->redirect(Url::to(['role/index']));
         }
         return $this->render("add",[
@@ -82,7 +77,7 @@ class RoleController extends Controller
     public function actionDel($id=0){
         $id = \Yii::$app->request->getQueryParam('id',0);
         if ($id==0){
-            throw new \Exception("不能删除管理员账号");
+            throw new \Exception("删除失败");
         }
         if (!Role::recursionDel($id)){
             throw new \Exception("删除失败");
