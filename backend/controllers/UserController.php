@@ -5,6 +5,7 @@ namespace backend\controllers;
 
 
 use common\models\User;
+use common\models\UserForm;
 use yii\data\Pagination;
 use yii\web\Controller;
 
@@ -27,7 +28,10 @@ class UserController extends Controller
      * 前台用户添加
      */
     public function actionFrontendUserAdd(){
-        return $this->render("frontend_user_add");
+        $model = new UserForm();
+        return $this->render("frontend_user_add",[
+            'model' =>  $model
+        ]);
     }
 
     /**

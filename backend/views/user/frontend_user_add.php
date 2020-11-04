@@ -7,58 +7,37 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
     .main-layout-tab .layui-tab-content {
         position: relative;
     }
+    .show{
+        display: block;
+        width: 200px;
+        height: 200px;
+    }
 </style>
 <div class="page-content-wrap clearfix">
     <form class="layui-form">
         <div class="layui-tab">
             <ul class="layui-tab-title">
-                <li><a href="<?=\yii\helpers\Url::to(['user/frontend-index'])?>">用户列表</a></li>
-                <li class="layui-this">用户添加</li>
+                <li><a href="article-list.html">单页列表</a></li>
+                <li class="layui-this">页面管理</li>
             </ul>
             <div class="layui-tab-content">
+                <div class="layui-tab-item"></div>
                 <div class="layui-tab-item layui-show">
                     <div class="layui-form-item">
-                        <label class="layui-form-label">页面名称：</label>
+                        <label class="layui-form-label">用户名：</label>
                         <div class="layui-input-block">
-                            <input type="text" name="name" required lay-verify="required" placeholder="请输入文章名称" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">选择模板：</label>
-                        <div class="layui-input-block">
-                            <select name="category" lay-verify="required">
-                                <option value="">请选择模板</option>
-                                <option value="1">article.html</option>
-                                <option value="2">list.html</option>
-                                <option value="2">page.html</option>
-                            </select>
+                            <input type="text" name="name" required lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">图像上传：</label>
-                        <div class="layui-input-block">
-                            <input type="file" name="file（可随便定义）" class="layui-upload-file">
+                        <div class="layui-input-block" >
+                            <input id="upload-file" type="file" name="head_image" class="layui-upload-file">
                         </div>
                     </div>
+                </div>
+                <div class="layui-tab-item">
 
-                    <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">单页内容：</label>
-                        <div class="layui-input-block">
-                            <textarea class="layui-textarea layui-hide" name="content" lay-verify="content" id="LAY_demo_editor"></textarea>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">关键字：</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="laiyuan" placeholder="请输入关键字" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">描述：</label>
-                        <div class="layui-input-block">
-                            <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -112,8 +91,7 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
                 , 'unlink' //清除链接
                 , 'image' //插入图片
             ],
-            height: 100,
-            uploadImage: {url: "<?=\yii\helpers\Url::to([''])?>", type: "post"}
+            height: 100
         })
         //全选
         form.on('checkbox(allChoose)', function(data) {
@@ -126,10 +104,11 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
         form.render();
 
         layui.upload({
-            url: '上传接口url',
+            url: '<?=\yii\helpers\Url::to(["common/upload-image"])?>',
             success: function(res) {
+                $("#upload-file").after("<img src='"+res.data+"' class='show'>");
                 console.log(res); //上传成功返回值，必须为json格式
-            }
+            },
         });
     });
 </script>
