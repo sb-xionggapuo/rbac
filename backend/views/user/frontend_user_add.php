@@ -1,4 +1,5 @@
 <?php
+/* @var $id int */
 $this->title = "前台用户添加";
 $this->params['tab'] = "前台用户添加";
 $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
@@ -7,6 +8,9 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
     .main-layout-tab .layui-tab-content {
         position: relative;
     }
+    .hide{
+        display: none;
+    }
     .show{
         display: block;
         width: 200px;
@@ -14,11 +18,13 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
     }
 </style>
 <div class="page-content-wrap clearfix">
-    <form class="layui-form">
+    <form class="layui-form" action="<?=\yii\helpers\Url::to(['user/frontend-user-add'])?>" method="post">
+        <input type="hidden" name="_csrf-backend" value="<?=Yii::$app->request->csrfToken?>">
+        <input type="hidden" name="id" value="<?=$id?>">
         <div class="layui-tab">
             <ul class="layui-tab-title">
-                <li><a href="article-list.html">单页列表</a></li>
-                <li class="layui-this">页面管理</li>
+                <li><a href="<?=\yii\helpers\Url::to(['user/frontend-index'])?>">用户列表</a></li>
+                <li class="layui-this">添加用户</li>
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item"></div>
@@ -26,25 +32,54 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
                     <div class="layui-form-item">
                         <label class="layui-form-label">用户名：</label>
                         <div class="layui-input-block">
-                            <input type="text" name="name" required lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                              <input type="text" name="UserForm[username]" value="<?=$model->username?>"   placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                                <?=$model->getErrors()['username'][0]??""?>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">邮箱：</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="UserForm[email]" value="<?=$model->email?>"  placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+                            <?=$model->getErrors()['email'][0]??""?>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">密码：</label>
+                        <div class="layui-input-block">
+                            <input type="password" name="UserForm[password]" value="<?=$model->password?>"  placeholder="请输入密码" autocomplete="off" class="layui-input">
+                            <?=$model->getErrors()['password'][0]??""?>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">确认密码：</label>
+                        <div class="layui-input-block">
+                            <input type="password" name="UserForm[Rpassword]" value="<?=$model->Rpassword?>"  placeholder="请确认密码" autocomplete="off" class="layui-input">
+                            <?=$model->getErrors()['Rpassword'][0]??""?>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">图像上传：</label>
                         <div class="layui-input-block" >
                             <input id="upload-file" type="file" name="head_image" class="layui-upload-file">
+                            <?php if (!empty($model->head_image)){?>
+                                <img id="imgId" src="<?=$model->head_image?>" alt="未找到该图片" class="show">
+                            <?php }else{?>
+                                <img id="imgId" src="<?=$model->head_image?>" alt="未找到该图片" class="hide">
+                            <?php }?>
                         </div>
                     </div>
                 </div>
                 <div class="layui-tab-item">
-
+                    <input type="hidden" id="head_image" name="UserForm[head_image]" value="<?=$model->head_image?>">
                 </div>
             </div>
         </div>
         <div class="layui-form-item" style="margin-top: 70px;">
             <div class="layui-input-block">
-                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <?=\yii\helpers\Html::submitButton("立即提交",['class'=>"layui-btn layui-btn-normal"])?>
+<!--                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">立即提交</button>-->
+                <?=\yii\helpers\Html::resetButton('重置',['class'=>"layui-btn layui-btn-primary"])?>
+<!--                <button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
             </div>
         </div>
     </form>
@@ -106,7 +141,9 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
         layui.upload({
             url: '<?=\yii\helpers\Url::to(["common/upload-image"])?>',
             success: function(res) {
-                $("#upload-file").after("<img src='"+res.data+"' class='show'>");
+                $("#imgId").removeClass("hide").addClass("show");
+                $("#head_image").val(res.data);
+                $("#imgId").attr("src",res.data);
                 console.log(res); //上传成功返回值，必须为json格式
             },
         });

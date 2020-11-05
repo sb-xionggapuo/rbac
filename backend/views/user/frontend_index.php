@@ -19,7 +19,7 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
         <div class="layui-form-item">
             <div class="layui-inline tool-btn">
                 <a href="<?=\yii\helpers\Url::to(['user/frontend-user-add'])?>" class="layui-btn layui-btn-small layui-btn-normal addBtn hidden-xs"><i class="layui-icon">&#xe654;</i></a>
-                <a class="layui-btn layui-btn-small layui-btn-warm listOrderBtn hidden-xs"><i class="iconfont">&#xe656;</i></a>
+                <button class="layui-btn layui-btn-small layui-btn-danger delBtn hidden-xs"><i class="layui-icon">&#xe640;</i></button>
             </div>
             <div class="layui-inline">
                 <input type="text" name="title" placeholder="请输入标题" autocomplete="off" class="layui-input">
@@ -64,31 +64,31 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
             <?php foreach ($user as $u){?>
             <tr>
                 <td>
-<!--                    <input type="checkbox" name="" lay-skin="primary" data-id="--><?//=$u->id?><!--">-->
-                <?=\yii\helpers\Html::checkbox("check[]",false,['lay-skin'=>'primary','data-id'=>$u->id])?>
+                    <input type="checkbox" name="primary_id" lay-skin="primary" data-id="<?=$u->id?>" value="<?=$u->id?>">
+<!--                --><?//=\yii\helpers\Html::checkbox("check[]",false,['lay-skin'=>'primary','data-id'=>$u->id])?>
                 </td>
                 <td class="hidden-xs"><?=$u->id?></td>
                 <td class="hidden-xs"><?=$u->username?></td>
                 <td><?=$u->lastLoginTime?></td>
                 <td><?=$u->last_login_ip?></td>
-                <td>
+                <td data-id="<?=$u->id?>">
                     <?php if ($u->status == \common\models\User::STATUS_ACTIVE){?>
-                        <button class="layui-btn layui-btn-mini layui-btn-normal table-list-status" data-status='1'>正常</button>
+                        <button class="layui-btn layui-btn-mini layui-btn-normal table-list-status" data-status='10'>正常</button>
                     <?php }else{?>
-                        <button class="layui-btn layui-btn-mini table-list-status layui-btn-warm" data-status="2">已拉黑</button>
+                        <button class="layui-btn layui-btn-mini table-list-status layui-btn-warm" data-status="9">已拉黑</button>
                     <?php }?>
                 </td>
                 <td>
                     <div class="layui-inline">
-                        <button class="layui-btn layui-btn-mini layui-btn-normal  add-btn" data-id="1" data-url="menu-add2.html"><i class="layui-icon">&#xe654;</i></button>
-                        <button class="layui-btn layui-btn-mini layui-btn-normal  edit-btn" data-id="1" data-url="menu-add2.html"><i class="layui-icon">&#xe642;</i></button>
-                        <button class="layui-btn layui-btn-mini layui-btn-danger del-btn" data-id="1" data-url="del.html"><i class="layui-icon">&#xe640;</i></button>
+                        <a href="<?=\yii\helpers\Url::to(['user/frontend-user-add','id'=>$u->id])?>" class="layui-btn layui-btn-mini layui-btn-normal  edit-btn" data-id="1" data-url="menu-add2.html"><i class="layui-icon">&#xe642;</i></a>
+                        <a href="<?=\yii\helpers\Url::to(['user/user-del','id'=>$u->id])?>" class="layui-btn layui-btn-mini layui-btn-danger del-btn" data-id="1" data-url="del.html"><i class="layui-icon">&#xe640;</i></a>
                     </div>
                 </td>
             </tr>
             <?php }?>
             </tbody>
         </table>
+        <input type="hidden" id="csrf" value="<?=Yii::$app->request->csrfToken?>">
         <div class="page-wrap">
             <?=\yii\widgets\LinkPager::widget([
                     'pagination' => $pagination,
@@ -105,14 +105,58 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
         $('#table-list').on('click', '.table-list-status', function() {
             var That = $(this);
             var status = That.attr('data-status');
-            var id = That.parent().attr('data-id');
-            if(status == 1) {
-                That.removeClass('layui-btn-normal').addClass('layui-btn-warm').html('已拉黑').attr('data-status', 2);
-            } else if(status == 2) {
-                That.removeClass('layui-btn-warm').addClass('layui-btn-normal').html('正常').attr('data-status', 1);
-
+            if (status ==10){
+                status=9;
+            }else{
+                status=10;
             }
-        })
+            var csrf = $("#csrf").val();
+            var id = That.parent().attr('data-id');
+            $.ajax({
+                url:"<?=\yii\helpers\Url::to(['user/update-status'])?>",
+                type:"post",
+                dataType:"json",
+                data:{"status":status,"id":id,"_csrf-backend":csrf},
+                success:function(data){
+                    if(data.status == 9) {
+                        That.removeClass('layui-btn-normal').addClass('layui-btn-warm').html('已拉黑').attr('data-status',9);
+                    } else if(data.status == 10) {
+                        That.removeClass('layui-btn-warm').addClass('layui-btn-normal').html('正常').attr('data-status', 10);
+                    }
+                    console.log(data);
+                }
+            });
+
+        });
+
+        $(".delBtn").click(function (){
+            var ids = new Array();
+            $("input[name='primary_id']:checked").each(function(){
+                ids.push($(this).val());
+            });
+            $.ajax({
+                url:"<?=\yii\helpers\Url::to(['user/user-del-all'])?>",
+                data:{"id":ids},
+                dataType: "json",
+                type: "get",
+                success:function (data){
+                    if (data.code ==1){
+                        layer.msg("删除成功",{
+                            icon:6,time:2000,title:"删除提示"
+                        },function (){
+                            window.location.reload();
+                        });
+                    }else{
+                        layer.alert("删除失败",{
+                            icon:5,
+                            title:"删除提示"
+                        },function (){
+                            window.location.reload();
+                        })
+                    }
+                }
+            });
+        });
 
     });
 </script>

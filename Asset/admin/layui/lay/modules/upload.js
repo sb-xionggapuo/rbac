@@ -49,7 +49,6 @@
                 if (a) {
                     clearInterval(f), c.contents().find("body").html("");
                     try {
-                        var a = a.replace("下载视频","");
                         a = JSON.parse(a);
                     } catch (i) {
                         return a = {}, t.msg("请对上传接口返回JSON字符", r)
