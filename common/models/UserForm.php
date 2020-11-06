@@ -16,7 +16,7 @@ class UserForm extends Model
     public $password;
     public $Rpassword;
     public $head_image;
-
+    public $role_id;
     public function rules()
     {
         return [
@@ -26,7 +26,8 @@ class UserForm extends Model
             [['username','password'],'string',"min"=>2,"max"=>15],
             ['email',"email","message"=>"邮箱格式不正确"],
             ['Rpassword',"compare",'compareAttribute'=>"password","message"=>"重复密码不一致"],
-            ['head_image',"safe"]
+            ['head_image',"safe"],
+            ['role_id','notZero']
         ];
     }
     public function attributeLabels()
@@ -36,6 +37,7 @@ class UserForm extends Model
             "email"     =>  "邮箱",
             "password"  =>  "密码",
             "Rpassword" =>  "确认密码",
+            "role_id"   =>  "角色",
         ];
     }
 
@@ -47,6 +49,7 @@ class UserForm extends Model
         }
         $model->username = $this->username;
         $model->email = $this->email;
+        $model->role_id    = $this->role_id;
         $model->setPassword($this->password);
         $model->identity    = 1;
         $model->status      = 10;
@@ -59,5 +62,11 @@ class UserForm extends Model
         $model->generateAuthKey();
         $model->generateEmailVerificationToken();
         return $model->save();
+    }
+
+    public function notZero($attribute, $params){
+        if ($this->$attribute ==0){
+            $this->addError($attribute,"角色不能为空");
+        }
     }
 }

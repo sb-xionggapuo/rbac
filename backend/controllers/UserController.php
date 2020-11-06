@@ -4,6 +4,7 @@
 namespace backend\controllers;
 
 
+use common\models\Role;
 use common\models\User;
 use common\models\UserForm;
 use yii\data\Pagination;
@@ -18,12 +19,18 @@ class UserController extends Controller
      * 默认按 修改时间 倒序排列
      */
     public function actionFrontendIndex(){
-        $model = User::find()->where(['<>','status',User::STATUS_DELETED])->andWhere(['identity'=>User::IDENTITY_FRONTEND])->orderBy("updated_at DESC");
+        $role = Role::getSon();
+        $username = \Yii::$app->request->getQueryParam("username",null);
+        $role_id = \Yii::$app->request->getQueryParam("role_id",null);
+        $model = User::find()->alias("a")->select(["a.*","b.name as role_name"])->leftJoin("role b","a.role_id = b.id")->where(['<>','a.status',User::STATUS_DELETED])->andWhere(['a.identity'=>User::IDENTITY_FRONTEND,'b.status'=>1])
+            ->andFilterWhere(['a.username'=>$username])->andFilterWhere(["a.role_id"=>$role_id])
+            ->orderBy("a.updated_at DESC");
         $pagination = new Pagination(['totalCount'=>$model->count(),'pageSize'=>10]);
-        $user = $model->offset($pagination->offset)->limit($pagination->limit)->all();
+        $user = $model->offset($pagination->offset)->limit($pagination->limit)->asArray()->all();
         return $this->render("frontend_index",[
             'pagination'    =>  $pagination,
-            'user'          =>  $user
+            'user'          =>  $user,
+            'role'         =>  $role
         ]);
     }
 
@@ -35,11 +42,13 @@ class UserController extends Controller
         $id = \Yii::$app->request->getQueryParam("id",0);
         $postid = \Yii::$app->request->getBodyParam("id",0);
         $model->setScenario(UserForm::USERFORM_ADD);
+        $role = Role::getSon();
         if (!empty($id)){
             $model->setScenario(UserForm::SCENARIO_DEFAULT);
             $user =  User::findOne(['id'=>$id]);
-            $model->username = $user->username;
-            $model->email = $user->email;
+            $model->username    = $user->username;
+            $model->email       = $user->email;
+            $model->role_id     = $user->role_id;
             $model->head_image = $user->head_image;
         }
         if (!empty($postid)){
@@ -51,7 +60,8 @@ class UserController extends Controller
         }
         return $this->render("frontend_user_add",[
             'model' =>  $model,
-            "id"    =>  $id
+            "id"    =>  $id,
+            "role"  => $role
         ]);
     }
 

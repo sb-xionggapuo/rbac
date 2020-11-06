@@ -21,6 +21,7 @@ use yii\web\IdentityInterface;
  * @property integer $status
  * @property integer $created_at
  * @property integer $identity
+ * @property integer $role_id
  * @property integer $updated_at
  * @property integer $last_login_time
  * @property string $password write-only password
@@ -234,5 +235,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function getLastLoginTime(){
         return date("Y-m-d H:i:s",$this->last_login_time);
     }
-
+    public function getRole(){
+        return $this->hasOne(Role::class,['role_id'=>'id']);
+    }
 }

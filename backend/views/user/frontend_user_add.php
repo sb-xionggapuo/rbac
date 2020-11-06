@@ -32,29 +32,41 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
                     <div class="layui-form-item">
                         <label class="layui-form-label">用户名：</label>
                         <div class="layui-input-block">
-                              <input type="text" name="UserForm[username]" value="<?=$model->username?>"   placeholder="请输入用户名" autocomplete="off" class="layui-input">
-                                <?=$model->getErrors()['username'][0]??""?>
+                                <input type="text" name="UserForm[username]" value="<?=$model->username?>"   placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                                <span style="color: red"><?=$model->getErrors()['username'][0]??""?></span>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">邮箱：</label>
                         <div class="layui-input-block">
                             <input type="text" name="UserForm[email]" value="<?=$model->email?>"  placeholder="请输入邮箱" autocomplete="off" class="layui-input">
-                            <?=$model->getErrors()['email'][0]??""?>
+                            <span style="color: red"><?=$model->getErrors()['email'][0]??""?></span>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">密码：</label>
                         <div class="layui-input-block">
                             <input type="password" name="UserForm[password]" value="<?=$model->password?>"  placeholder="请输入密码" autocomplete="off" class="layui-input">
-                            <?=$model->getErrors()['password'][0]??""?>
+                            <span style="color: red"><?=$model->getErrors()['password'][0]??""?></span>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">确认密码：</label>
                         <div class="layui-input-block">
                             <input type="password" name="UserForm[Rpassword]" value="<?=$model->Rpassword?>"  placeholder="请确认密码" autocomplete="off" class="layui-input">
-                            <?=$model->getErrors()['Rpassword'][0]??""?>
+                            <span style="color: red"><?=$model->getErrors()['Rpassword'][0]??""?></span>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">角色：</label>
+                        <div class="layui-input-block">
+                            <select name="UserForm[role_id]" lay-verify="">
+                                <option value="0">请选择一个角色</option>
+                                <?php foreach ($role as $r){?>
+                                    <option <?php $rid = $model->role_id??0; if($rid==$r['id'])echo 'selected'?> value="<?=$r['id']?>"><?=$r['tree']?><?=$r['name']?></option>
+                                <?php }?>
+                            </select>
+                            <span style="color: red"><?=$model->getErrors()['role_id'][0]??""?></span>
                         </div>
                     </div>
                     <div class="layui-form-item">

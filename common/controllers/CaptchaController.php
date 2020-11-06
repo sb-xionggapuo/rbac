@@ -13,7 +13,6 @@ class CaptchaController extends CaptchaAction
     {
         $this->setHttpHeaders();
         \Yii::$app->response->format = Response::FORMAT_RAW;
-
         return $this->renderImage($this->getVerifyCode(true));
     }
 }

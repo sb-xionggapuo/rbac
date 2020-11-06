@@ -33,6 +33,7 @@ class Role extends ActiveRecord
         $model = self::find()->where(['<>','status',-1])->andWhere(['<>','id',0])->andFilterWhere(['<>','id',$notPid])->asArray()->all();
         return Tree::tidyTree($model);
     }
+
     public static function getGrandfather($id){
         if (!is_numeric($id)){
             throw new Exception('$id 不是整型');
@@ -54,6 +55,26 @@ class Role extends ActiveRecord
         return empty($model)?false:true;
     }
 
+    /**
+     * @param $id
+     *
+     */
+    /**
+     * @param null $role_id 当前登录后台的管理员的 角色id
+     * @return array  树形角色菜单 得到id角色下的所有子角色
+     */
+    public static function getSon($role_id=null){
+        $arr1 = self::getTree();
+        if (!empty($role_id)){
+            $arr2 = self::getTree($role_id);
+            foreach($arr1 as $key=>$value){
+                if (in_array($arr1[$key],$arr2)){
+                    unset($arr1[$key]);
+                }
+            }
+        }
+        return $arr1;
+    }
     public function add($jurisdiction){
         if ($this->parent_id == 0){
             $this->tree = "|_ _ ";

@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\controllers\CaptchaController;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -31,7 +32,7 @@ class SiteController extends Controller
                 'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['signup',"captcha"],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -60,10 +61,11 @@ class SiteController extends Controller
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
+            'captcha'   =>[
+                'class' =>  CaptchaController::class,
+                'maxLength' =>  4,
+                'minLength' =>  4
+            ]
         ];
     }
 
