@@ -41,7 +41,7 @@ class UserForm extends Model
         ];
     }
 
-    public function add($id=0){
+    public function add($id=0,$identity=User::IDENTITY_FRONTEND){
         if (empty($id)){
             $model = new User();
         }else{
@@ -51,7 +51,7 @@ class UserForm extends Model
         $model->email = $this->email;
         $model->role_id    = $this->role_id;
         $model->setPassword($this->password);
-        $model->identity    = 1;
+        $model->identity    = $identity;
         $model->status      = 10;
         if (!empty($this->head_image)){
             $model->head_image = $this->head_image;

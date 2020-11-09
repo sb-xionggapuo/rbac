@@ -56,7 +56,9 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
                 <td>
                     <div class="layui-inline">
                         <a href="<?=Url::to(['role/add','pid'=>$m['id']])?>" class="layui-btn layui-btn-mini layui-btn-normal  add-btn" data-id="<?=$m['id']?>" data-url="menu-add.html"><i class="layui-icon">&#xe654;</i></a>
+                        <?php if (Yii::$app->user->identity->role_id != $m['id']){?>
                         <a href="<?=Url::to(['role/add','id'=>$m['id']])?>" class="layui-btn layui-btn-mini layui-btn-normal  edit-btn" data-id="<?=$m['id']?>" data-url="menu-add.html"><i class="layui-icon">&#xe642;</i></a>
+                        <?php }?>
                         <a href="<?=Url::to(['role/del','id'=>$m['id']]);?>" class="layui-btn layui-btn-mini layui-btn-danger del-btn" data-id="<?=$m['id']?>" data-url="menu-add.html"><i class="layui-icon">&#xe640;</i></a>
                     </div>
                 </td>

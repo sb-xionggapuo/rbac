@@ -75,6 +75,14 @@ class Role extends ActiveRecord
         }
         return $arr1;
     }
+
+    public static function getSonIds($role){
+        $in = [];
+        foreach ($role as $r){
+            array_push($in,$r['id']);
+        }
+        return $in;
+    }
     public function add($jurisdiction){
         if ($this->parent_id == 0){
             $this->tree = "|_ _ ";

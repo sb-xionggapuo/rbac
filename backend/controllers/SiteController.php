@@ -85,7 +85,7 @@ class SiteController extends Controller
             return $this->goBack();
         } else {
             $model->password = '';
-
+            $model->verifyCode = '';
             return $this->renderPartial('login', [
                 'model' => $model,
             ]);

@@ -28,9 +28,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'imageOptions'=>[
                     'style'=>'cursor:pointer;',
                     // 添加点击事件
-                    'onclick' => 'this.src=this.src+"&c="+Math.random();'
+//                    'onclick' => 'this.src=this.src+"&c="+Math.random();'
                 ],
-                'template' => '<div class="row"><div class="layui-inline">{input}</div><div class="layui-inline" onclick="">{image}</div></div>',
+//                'template' => '<div class="row"><div class="layui-inline">{input}</div><div class="layui-inline" onclick="">{image}</div></div>',
             ])->label("验证码");?>
             <?= $form->field($model, 'rememberMe')->checkbox() ?>
                 <div style="color:#999;margin:1em 0">

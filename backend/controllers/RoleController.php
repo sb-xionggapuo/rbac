@@ -22,7 +22,7 @@ class RoleController extends Controller
      * @return string
      */
     public function actionIndex(){
-        $role = Role::getTree();//得到 整理好的树形结构
+        $role = Role::getSon(\Yii::$app->user->identity->role_id);//得到 整理好的树形结构
         return $this->render("index",[
             "model" =>  $role
         ]);
@@ -54,12 +54,18 @@ class RoleController extends Controller
      * @return string
      */
     public function actionAdd(){
-        $menu = Role::getTree();
+        $menu = Role::getSon(\Yii::$app->user->identity->role_id);
         $model = new Role();
         $parent_id = \Yii::$app->request->getQueryParam('pid',0);//这个是用于 指定父菜单添加的 parent_id
         $id = \Yii::$app->request->getQueryParam('id',0);//这个是用于 编辑
         if ($id!=0){
-            $menu   = Role::getTree($id);
+            //编辑 修改上级角色的时候 上级不能出现自己以及自己的子集
+            $arr2 = Role::getSon($id);
+            foreach ($menu as $key =>$value){
+                if (in_array($menu[$key],$arr2)){
+                    unset($menu[$key]);
+                }
+            }
             $model = Role::findOne($id);
             $parent_id  = $model->parent_id;
         }
@@ -107,8 +113,9 @@ class RoleController extends Controller
     public function actionGetMenu(){
         $id = \Yii::$app->request->getBodyParam("id");
         $checkId = Jurisdiction::find()->select(['menu_id'])->filterWhere(['role_id'=>$id])->column();
-        $menu = Menu::find()->where(['<>','status',-1])->asArray()->all();
-        $data = ['list'=>$menu,'checkedId'=>$checkId,'disabledId'=>[4]];
+        $in = Jurisdiction::find()->select(['menu_id'])->filterWhere(['role_id'=>\Yii::$app->user->identity->role_id])->column();
+        $menu = Menu::find()->where(['<>','status',-1])->andWhere(['in','id',$in])->asArray()->all();
+        $data = ['list'=>$menu,'checkedId'=>$checkId,'disabledId'=>[]];
         \Yii::$app->response->format = Response::FORMAT_JSON;
         return ['code'=>1,'msg'=>"成功",'data'=>$data];
     }

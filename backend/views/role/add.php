@@ -19,7 +19,9 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
             <label class="layui-form-label">上级：</label>
             <div class="layui-input-block">
                 <select name="Role[parent_id]" lay-verify="required">
+                    <?php if(Yii::$app->user->identity->role_id == 0){?>
                     <option value="0">作为一级角色</option>
+                    <?php }?>
                     <?php foreach ($menu as $m){?>
                         <option <?=$m['id'] == $parent_id?'selected':'';?> value="<?=$m['id']?>"><?=$m['tree']?>&nbsp;<?=$m['name']?></option>
                     <?php }?>

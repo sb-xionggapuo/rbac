@@ -6,6 +6,7 @@ use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\captcha\CaptchaAction;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -62,7 +63,7 @@ class SiteController extends Controller
                 'class' => 'yii\web\ErrorAction',
             ],
             'captcha'   =>[
-                'class' =>  CaptchaController::class,
+                'class' =>  CaptchaAction::class,
                 'maxLength' =>  4,
                 'minLength' =>  4
             ]
@@ -95,7 +96,7 @@ class SiteController extends Controller
             return $this->goBack();
         } else {
             $model->password = '';
-
+            $model->verifyCode = '';
             return $this->render('login', [
                 'model' => $model,
             ]);

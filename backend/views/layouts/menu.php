@@ -49,7 +49,7 @@ use \yii\helpers\Url;
                 <a href="javascript:;"><i class="iconfont">&#xe608;</i>用户管理</a>
                 <dl class="layui-nav-child">
                     <dd><a href="<?=Url::to(['user/frontend-index'])?>"  data-id='3' data-text="前台用户"><span class="l-line"></span>前台用户</a></dd>
-                    <dd><a href="<?=Url::to(['user/admin-index'])?>"  data-id='9' data-text="管理员用户"><span class="l-line"></span>管理员用户</a></dd>
+                    <dd><a href="<?=Url::to(['user/backend-index'])?>"  data-id='9' data-text="管理员用户"><span class="l-line"></span>管理员用户</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">
