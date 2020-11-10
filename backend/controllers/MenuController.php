@@ -110,7 +110,7 @@ class MenuController extends Controller
             $model = Menu::findOne($id);
             $parent_id  = $model->parent_id;
         }
-        if ($model->load(\Yii::$app->request->post())&&$model->add(1)){
+        if ($model->load(\Yii::$app->request->post())&&$model->add(Menu::FRONTEND_MENU)){
             return $this->redirect(Url::to(['menu/frontend-menu']));
         }
         return $this->render("frontend_menu_add",[

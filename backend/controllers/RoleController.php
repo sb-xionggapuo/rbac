@@ -112,9 +112,14 @@ class RoleController extends Controller
      */
     public function actionGetMenu(){
         $id = \Yii::$app->request->getBodyParam("id");
-        $checkId = Jurisdiction::find()->select(['menu_id'])->filterWhere(['role_id'=>$id])->column();
-        $in = Jurisdiction::find()->select(['menu_id'])->filterWhere(['role_id'=>\Yii::$app->user->identity->role_id])->column();
-        $menu = Menu::find()->where(['<>','status',-1])->andWhere(['in','id',$in])->asArray()->all();
+        if ($id!=0){
+            $role_id =  Role::find()->select(['parent_id'])->where(['id'=>$id])->column();
+        }else{
+            $role_id = \Yii::$app->user->identity->role_id;
+        }
+        $checkId = Jurisdiction::find()->select(['menu_id'])->filterWhere(['role_id'=>$id])->column();//当前权限 被选中的菜单
+        $in = Jurisdiction::find()->select(['menu_id'])->filterWhere(['role_id'=>$role_id])->column();
+        $menu = Menu::find()->where(['<>','status',-1])->andFilterWhere(['in','id',$in])->asArray()->all();
         $data = ['list'=>$menu,'checkedId'=>$checkId,'disabledId'=>[]];
         \Yii::$app->response->format = Response::FORMAT_JSON;
         return ['code'=>1,'msg'=>"成功",'data'=>$data];

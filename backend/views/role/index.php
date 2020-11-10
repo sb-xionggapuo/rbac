@@ -42,7 +42,7 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
                 <td><input type="checkbox" name="primary_id" lay-skin="primary" data-id="<?=$m['id']?>" value="<?=$m['id']?>"></td>
                 <td class="hidden-xs"><?=$m['id']?></td>
                 <td><?=$m['tree']?><?=$m['name']?>
-                    <?php if (Role::IsParentMenu($m['id'])){?>
+                    <?php if (Role::IsParentRole($m['id'])){?>
                         <a class="layui-btn layui-btn-mini layui-btn-normal showSubBtn" data-id='<?=$m['id']?>'>+</a>
                     <?}?></td>
                 <td><?=$m['describe']?></td>

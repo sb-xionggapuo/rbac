@@ -6,6 +6,8 @@ use yii\db\Exception;
 
 class Menu extends \yii\db\ActiveRecord
 {
+    const FRONTEND_MENU = 1;
+    const BACKEND_MENU = 10;
     static $grandFather;
     public function rules()
     {
@@ -39,12 +41,12 @@ class Menu extends \yii\db\ActiveRecord
     }
     /**
      * 使用前请先$model->load()
-     * specification:添加后台菜单
+     * specification:添加菜单
      * author:何文杰
      * date:2020/10/27 16:48
      * @return bool
      */
-    public function add($flag=10){
+    public function add($flag=self::BACKEND_MENU){
         if ($this->parent_id ==0){
             $this->level    =   1;
             $this->tree     =   "|_ _ ";
@@ -54,7 +56,14 @@ class Menu extends \yii\db\ActiveRecord
             $this->tree     =   $parent->tree."_ _ ";
         }
         $this->flag = $flag;
-        return $this->save();
+        $result = $this->save();
+        $son = self::find()->where(['parent_id'=>$this->primaryKey])->all();//递归修改
+        if (!empty($son)){
+            foreach ($son as $s){
+                $s->add($flag);
+            }
+        }
+        return $result;
     }
 
     /**

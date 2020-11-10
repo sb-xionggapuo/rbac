@@ -71,6 +71,21 @@ use \yii\helpers\Url;
                 <a href="javascript:;"><i class="iconfont">&#xe600;</i>备份管理</a>
             </li>
             <li class="layui-nav-item">
+                <a href="javascript:;"><i class="iconfont">&#xe600;</i>备份管理2</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;"  data-id='3' data-text="文章管理"><span class="l-line"></span>文章管理</a></dd>
+                    <dd><a href="javascript:;"  data-id='9' data-text="单页管理"><span class="l-line"></span>单页管理</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;"><i class="iconfont">&#xe600;</i>备份管理2</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;"  data-id='3' data-text="文章管理"><span class="l-line"></span>文章管理</a></dd>
+                    <dd><a href="javascript:;"  data-id='9' data-text="单页管理"><span class="l-line"></span>单页管理</a></dd>
+                </dl>
+            </li>
+
+            <li class="layui-nav-item">
                 <a href="javascript:;" data-url="admin-info.html" data-id='5' data-text="个人信息"><i class="iconfont">&#xe606;</i>个人信息</a>
             </li>
             <li class="layui-nav-item">

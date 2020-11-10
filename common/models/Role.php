@@ -4,6 +4,7 @@
 namespace common\models;
 
 
+use common\enum\STATUS;
 use common\HelpFunction\Tree;
 use yii\db\ActiveRecord;
 use yii\db\Exception;
@@ -46,8 +47,8 @@ class Role extends ActiveRecord
         }
         return self::$grandFather;
     }
-
-    public static function IsParentMenu($id){
+//是否是父角色
+    public static function IsParentRole($id){
         if (!is_numeric($id)){
             throw new Exception('$id 不是整型');
         }
@@ -93,11 +94,19 @@ class Role extends ActiveRecord
         $transaction = \Yii::$app->db->beginTransaction();
         try {
             $arr = [];
-            if (!$this->save()){
-                throw new \Exception("添加失败");
+            if (!$this->save())throw new \Exception("添加失败");
+            $son = self::find()->where(['parent_id'=>$this->primaryKey])->all();//递归修改
+            if (!empty($son)){
+                foreach ($son as $s){
+                    $sjurisdiction = Jurisdiction::find()->select(['menu_id'])->where(['role_id'=>$s->primaryKey])->column();
+                    $s->add($sjurisdiction);
+                }
             }
+            $pmenus = Jurisdiction::find()->select(['menu_id'])->where(['role_id'=>$this->parent_id])->column();//增加菜单必须在父类拥有的菜单下
             foreach ($jurisdiction as $j){
-                array_push($arr,[$this->id,$j]);
+                if (in_array($j,$pmenus)){
+                    array_push($arr,[$this->id,$j]);
+                }
             }
             Jurisdiction::deleteAll(['role_id'=>$this->id]);
             \Yii::$app->db->createCommand()->batchInsert('jurisdiction',['role_id','menu_id'],$arr)->execute();

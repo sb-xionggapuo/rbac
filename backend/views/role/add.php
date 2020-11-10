@@ -35,7 +35,6 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
                 <?=$form->field($model,"name")->textInput(['class'=>"layui-input",'placeholder'=>"请输入角色名称"])->label(false)?>
 <!--                <input type="text" name="title" required lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">-->
             </div>
-
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">描述：</label>
