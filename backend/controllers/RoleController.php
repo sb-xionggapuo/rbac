@@ -10,7 +10,7 @@ use common\models\Jurisdiction;
 use common\models\Role;
 use yii\db\Query;
 use yii\helpers\Url;
-use yii\web\Controller;
+use \common\rbac\Controller;
 use yii\web\Response;
 
 class RoleController extends Controller
@@ -48,10 +48,11 @@ class RoleController extends Controller
     }
 
     /**
-     * specification:增加角色
+     * @return string|Response
+     * @throws \yii\base\InvalidConfigException
+     * 注释时间:2020/11/12 14:17
      * author:何文杰
-     * date:2020/10/30 10:49
-     * @return string
+     * 权限添加
      */
     public function actionAdd(){
         $menu = Role::getSon(\Yii::$app->user->identity->role_id);
@@ -67,6 +68,7 @@ class RoleController extends Controller
                 }
             }
             $model = Role::findOne($id);
+            Role::$oldName = $model->name;
             $parent_id  = $model->parent_id;
         }
         $params = \Yii::$app->request->getBodyParams();
@@ -80,6 +82,14 @@ class RoleController extends Controller
             'id'        =>  $id,
         ]);
     }
+
+    /**
+     * @param int $id
+     * @return array|Response
+     * @throws \Exception
+     * 注释时间:2020/11/11 11:47
+     * author:何文杰
+     */
     public function actionDel($id=0){
         $id = \Yii::$app->request->getQueryParam('id',0);
         if ($id==0){
@@ -93,6 +103,7 @@ class RoleController extends Controller
         }
         return $this->redirect(['role/index']);
     }
+    //批量删除
     public function actionDelAll(){
         $ids = \Yii::$app->request->getQueryParam('id');
         $flag = true;

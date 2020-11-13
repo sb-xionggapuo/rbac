@@ -16,7 +16,7 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
             <colgroup>
                 <col width="50">
                 <col class="hidden-xs" width="50">
-                <col class="hidden-xs" width="200">
+                <col>
                 <col>
                 <col width="80">
                 <col width="130">
@@ -25,7 +25,7 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
             <tr>
                 <th id="allChoose"><input id="choose" type="checkbox" lay-skin="primary" lay-filter="allChoose"></th>
                 <th class="hidden-xs">ID</th>
-                <th class="hidden-xs">名称</th>
+                <th>名称</th>
                 <th>描述</th>
                 <th>状态</th>
                 <th>操作</th>

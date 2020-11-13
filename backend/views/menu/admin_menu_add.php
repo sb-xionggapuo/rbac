@@ -47,7 +47,7 @@ $this->title = "后台菜单添加";
             <div class="layui-input-block">
                 <?=$form->field($model,"icon")->textInput(['class'=>"layui-input",'placeholder'=>"填写 如:&#xe627;"])->label(false)?>
 <!--                <input type="text" name="title" required lay-verify="required" placeholder="请输入图标" autocomplete="off" class="layui-input">-->
-                <a style="color: #0000cc" target="_blank" href="https://www.layui.com/doc/element/icon.html#table">图标库</a>
+                <a style="color: #0000cc" target="_blank" href="https://www.layui.com/v1/doc/element/icon.html#table">图标库</a>
             </div>
 
         </div>

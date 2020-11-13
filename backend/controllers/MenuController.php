@@ -7,8 +7,7 @@ namespace backend\controllers;
 use backend\models\Menu;
 use yii\db\Exception;
 use yii\helpers\Url;
-use yii\web\Controller;
-
+use \common\rbac\Controller;
 class MenuController extends Controller
 {
 
@@ -83,6 +82,14 @@ class MenuController extends Controller
         }
         return $this->redirect(['menu/admin-menu']);
     }
+
+    /**
+     * @return array
+     * @throws \yii\base\InvalidConfigException
+     * 注释时间:2020/11/13 14:58
+     * author:何文杰
+     * 菜单管理公用的修改排序
+     */
     public function actionEditSort(){
         $params = \Yii::$app->request->getBodyParams();
         $model = Menu::findOne($params['id']);
@@ -93,6 +100,12 @@ class MenuController extends Controller
         return $this->success();
     }
 
+    /**
+     * @return string
+     * 注释时间:2020/11/13 14:58
+     * author:何文杰
+     * 前台菜单首页
+     */
     public function actionFrontendMenu(){
         $menu = Menu::getTree(1);
         return $this->render("frontend_menu",[
@@ -100,6 +113,12 @@ class MenuController extends Controller
        ]);
     }
 
+    /**
+     * @return string|\yii\web\Response
+     * 注释时间:2020/11/13 14:58
+     * author:何文杰
+     * 前台菜单添加 包含修改
+     */
     public function actionFrontendMenuAdd(){
         $menu = Menu::getTree(1);
         $model = new Menu();
@@ -119,6 +138,14 @@ class MenuController extends Controller
             'parent_id' =>  $parent_id
         ]);
     }
+
+    /**
+     * @return array|\yii\web\Response
+     * @throws \Exception
+     * 注释时间:2020/11/13 14:59
+     * author:何文杰
+     * 菜单删除 公用
+     */
     public function actionFrontendMenuDel(){
         $id = \Yii::$app->request->getQueryParam("id");
         if (!Menu::recursionDel($id)){
@@ -130,6 +157,12 @@ class MenuController extends Controller
         return $this->redirect(['menu/frontend-menu']);
     }
 
+    /**
+     * @return array
+     * 注释时间:2020/11/13 14:59
+     * author:何文杰
+     * 通用的批量删除
+     */
     public function actionDelAll(){
         $ids = \Yii::$app->request->getQueryParam('id');
         $flag = true;

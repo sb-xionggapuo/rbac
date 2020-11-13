@@ -2,6 +2,7 @@
 namespace backend\models;
 
 use common\HelpFunction\Tree;
+use common\models\Jurisdiction;
 use yii\db\Exception;
 
 class Menu extends \yii\db\ActiveRecord
@@ -57,6 +58,13 @@ class Menu extends \yii\db\ActiveRecord
         }
         $this->flag = $flag;
         $result = $this->save();
+        $j = Jurisdiction::find()->where(['role_id'=>0,"menu_id"=>$this->primaryKey])->all();
+        if (empty($j)){
+            $jurisdiction = new Jurisdiction();
+            $jurisdiction->role_id = 0;
+            $jurisdiction->menu_id = $this->primaryKey;
+            $jurisdiction->save();
+        }
         $son = self::find()->where(['parent_id'=>$this->primaryKey])->all();//递归修改
         if (!empty($son)){
             foreach ($son as $s){
@@ -117,7 +125,9 @@ class Menu extends \yii\db\ActiveRecord
                 self::recursionDel($s->id);
             }
         }
+        $auth = \Yii::$app->authManager;
         $model = self::findOne($id);
+        if (!empty($permission = $auth->getPermission($model->name)))$auth->remove($permission);
         $model->status= -1;
         return $model->save();
     }

@@ -217,7 +217,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * specification:
+     * specification: 更新他的登录时间和登录ip
      * author:何文杰
      * date:2020/10/26 17:21
      * @return bool
@@ -231,10 +231,22 @@ class User extends ActiveRecord implements IdentityInterface
        return false;
     }
 
-
+    /**
+     * @return false|string
+     * 注释时间:2020/11/13 15:07
+     * author:何文杰
+     * 得到最后登录时间
+     */
     public function getLastLoginTime(){
         return date("Y-m-d H:i:s",$this->last_login_time);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     * 注释时间:2020/11/13 15:07
+     * author:何文杰
+     * 得到角色
+     */
     public function getRole(){
         return $this->hasOne(Role::class,['role_id'=>'id']);
     }

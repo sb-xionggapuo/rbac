@@ -7,9 +7,10 @@ namespace backend\controllers;
 use common\models\Role;
 use common\models\User;
 use common\models\UserForm;
+use common\rbac\Controller;
 use yii\data\Pagination;
 use yii\helpers\Url;
-use yii\web\Controller;
+
 use yii\web\Response;
 
 class UserController extends Controller
@@ -53,7 +54,7 @@ class UserController extends Controller
             $model->username    = $user->username;
             $model->email       = $user->email;
             $model->role_id     = $user->role_id;
-            $model->head_image = $user->head_image;
+            $model->head_image  = $user->head_image;
         }
         if (!empty($postid)){
             $id = $postid;
@@ -103,7 +104,14 @@ class UserController extends Controller
         }
     }
 
-
+    /**
+     * @return array
+     * @throws \Throwable
+     * @throws \yii\db\Exception
+     * 注释时间:2020/11/13 15:00
+     * author:何文杰
+     * 批量删除用户
+     */
     public function actionUserDelAll(){
         $ids = \Yii::$app->request->getQueryParam('id');
         $flag = true;
@@ -142,6 +150,14 @@ class UserController extends Controller
             'role'          =>  $role
         ]);
     }
+
+    /**
+     * @return string|Response
+     * @throws \yii\base\InvalidConfigException
+     * 注释时间:2020/11/13 15:01
+     * author:何文杰
+     * 后台用户添加 包括修改
+     */
     public function actionBackendUserAdd(){
         $model = new UserForm();
         $id = \Yii::$app->request->getQueryParam("id",0);
