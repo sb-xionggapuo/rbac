@@ -12,8 +12,8 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
         <a href="<?=Url::to(['menu/admin-menu-add'])?>"  class="layui-btn layui-btn-small layui-btn-normal hidden-xs"><i class="layui-icon">&#xe654;</i></a>
         <button class="layui-btn layui-btn-small layui-btn-danger delBtn hidden-xs"><i class="layui-icon">&#xe640;</i></button>
     </div>
-    <div class="layui-form" id="table-list">
-        <table class="layui-table" lay-skin="line">
+    <div class="layui-form" id="table-list" style="overflow:scroll;width:100%;height: 800px;">
+        <table class="layui-table" lay-skin="line"">
             <colgroup>
                 <col width="50">
                 <col class="hidden-xs" width="50">
