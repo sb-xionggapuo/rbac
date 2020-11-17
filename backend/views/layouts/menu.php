@@ -35,19 +35,22 @@ use \yii\helpers\Url;
             <li class="layui-nav-item layui-nav-itemed">
                 <a href="javascript:;"><i class="layui-icon">&#xe62a;</i> 菜单管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="<?=\yii\helpers\Url::to(['menu/admin-menu'])?>"><span class="l-line"></span>后台菜单</a></dd>
-                    <dd><a href="<?=\yii\helpers\Url::to(['menu/frontend-menu'])?>"><span class="l-line"></span>前台菜单</a></dd>
+                    <dd><a href="<?=\yii\helpers\Url::to(['/menu/admin-menu'])?>"><span class="l-line"></span>后台菜单</a></dd>
+                    <dd><a href="<?=\yii\helpers\Url::to(['/menu/frontend-menu'])?>"><span class="l-line"></span>前台菜单</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">
                 <a href="javascript:;"><i class="iconfont">&#xe608;</i>用户管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="<?=Url::to(['user/frontend-index'])?>"><span class="l-line"></span>前台用户</a></dd>
-                    <dd><a href="<?=Url::to(['user/backend-index'])?>"><span class="l-line"></span>管理员用户</a></dd>
+                    <dd><a href="<?=Url::to(['/user/frontend-index'])?>"><span class="l-line"></span>前台用户</a></dd>
+                    <dd><a href="<?=Url::to(['/user/backend-index'])?>"><span class="l-line"></span>管理员用户</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">
-                <a href="<?=Url::to(['role/index'])?>"><i class="iconfont">&#xe60a;</i>RBAC</a>
+                <a href="<?=Url::to(['/role/index'])?>"><i class="iconfont">&#xe60a;</i>RBAC</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="<?=Url::to(['/backup'])?>"><i class="layui-icon">&#xe621;</i> 数据备份</a>
             </li>
         </ul>
     </div>

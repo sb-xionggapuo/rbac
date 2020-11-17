@@ -15,10 +15,11 @@ class Controller extends \yii\web\Controller
      */
     public function beforeAction($action)
     {
-        if(\Yii::$app->user->isGuest){
-            return $this->redirect(Url::to(['site/login']));
-        }
         if (!parent::beforeAction($action)){
+            return false;
+        }
+        if(\Yii::$app->user->isGuest){
+            $this->goHome();
             return false;
         }
         if (\Yii::$app->user->identity->role_id != 0){
