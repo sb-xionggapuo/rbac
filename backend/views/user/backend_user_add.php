@@ -74,7 +74,7 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
                     <div class="layui-form-item">
                         <label class="layui-form-label">图像上传：</label>
                         <div class="layui-input-block" >
-                            <input id="upload-file" type="file" name="head_image" class="layui-upload-file">
+                            <input id="upload-file" type="file" name="image" class="layui-upload-file">
                             <?php if (!empty($model->head_image)){?>
                                 <img id="imgId" src="<?=$model->head_image?>" alt="未找到该图片" class="show">
                             <?php }else{?>
@@ -84,7 +84,7 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
                     </div>
                 </div>
                 <div class="layui-tab-item">
-                    <input type="hidden" id="head_image" name="UserForm[head_image]" value="<?=$model->head_image?>">
+                    <input type="hidden" id="upimage" name="UserForm[head_image]" value="<?=$model->head_image?>">
                 </div>
             </div>
         </div>

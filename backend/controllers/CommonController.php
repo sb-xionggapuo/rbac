@@ -28,7 +28,7 @@ class CommonController extends Controller
      */
     public function actionUploadImage(){
         \Yii::$app->response->format = Response::FORMAT_JSON;
-        $file = UploadedFile::getInstanceByName("head_image");
+        $file = UploadedFile::getInstanceByName("image");
         $path = $this->getTimePath();
         $uniqid = md5(uniqid(microtime(true),true));
         if ($file->saveAs($path['absolute'].$uniqid.".".$file->extension)){

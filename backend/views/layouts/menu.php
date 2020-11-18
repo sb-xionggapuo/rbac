@@ -40,17 +40,26 @@ use \yii\helpers\Url;
                 </dl>
             </li>
             <li class="layui-nav-item">
-                <a href="javascript:;"><i class="iconfont">&#xe608;</i>用户管理</a>
+                <a href="javascript:;"><i class="layui-icon">&#xe613;</i>&nbsp;&nbsp;用户管理</a>
                 <dl class="layui-nav-child">
                     <dd><a href="<?=Url::to(['/user/frontend-index'])?>"><span class="l-line"></span>前台用户</a></dd>
                     <dd><a href="<?=Url::to(['/user/backend-index'])?>"><span class="l-line"></span>管理员用户</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">
-                <a href="<?=Url::to(['/role/index'])?>"><i class="iconfont">&#xe60a;</i>RBAC</a>
+
             </li>
             <li class="layui-nav-item">
-                <a href="<?=Url::to(['/backup'])?>"><i class="layui-icon">&#xe621;</i> 数据备份</a>
+
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;"><i class="layui-icon">&#xe631;</i>&nbsp;&nbsp;设置</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="<?=Url::to(['/sy-set/web-set'])?>"><span class="l-line"></span>网站信息</a></dd>
+                    <dd><a href="<?=Url::to(['/sy-set/seo-set'])?>"><span class="l-line"></span>SEO设置</a></dd>
+                    <dd><a href="<?=Url::to(['/role/index'])?>"><span class="l-line"></span>角色管理</a></dd>
+                    <dd><a href="<?=Url::to(['/backup'])?>"><span class="l-line"></span>数据备份</a></dd>
+                </dl>
             </li>
         </ul>
     </div>
@@ -94,6 +103,57 @@ use \yii\helpers\Url;
     </div>
 </div>
 <?=$this->blocks['js'];?>
+<script>
+
+    layui.use(['form', 'jquery', 'laydate', 'layer', 'laypage', 'dialog', 'element', 'upload', 'layedit'], function() {
+        var form = layui.form(),
+            layer = layui.layer,
+            $ = layui.jquery,
+            laypage = layui.laypage,
+            laydate = layui.laydate,
+            layedit = layui.layedit,
+            element = layui.element(),
+            dialog = layui.dialog;
+
+        //获取当前iframe的name值
+        var iframeObj = $(window.frameElement).attr('name');
+        //创建一个编辑器
+        var editIndex = layedit.build('LAY_demo_editor', {
+            tool: ['strong' //加粗
+                , 'italic' //斜体
+                , 'underline' //下划线
+                , 'del' //删除线
+                , '|' //分割线
+                , 'left' //左对齐
+                , 'center' //居中对齐
+                , 'right' //右对齐
+                , 'link' //超链接
+                , 'unlink' //清除链接
+                , 'image' //插入图片
+            ],
+            height: 100
+        });
+        //全选
+        form.on('checkbox(allChoose)', function(data) {
+            var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+            child.each(function(index, item) {
+                item.checked = data.elem.checked;
+            });
+            form.render('checkbox');
+        });
+        form.render();
+
+        layui.upload({
+            url: '<?=\yii\helpers\Url::to(["common/upload-image"])?>',
+            success: function(res) {
+                $("#imgId").removeClass("hide").addClass("show");
+                $("#upimage").val(res.data);
+                $("#imgId").attr("src",res.data);
+                console.log(res); //上传成功返回值，必须为json格式
+            },
+        });
+    });
+</script>
 <?php $this->endBody() ?>
 </body>
 </html>

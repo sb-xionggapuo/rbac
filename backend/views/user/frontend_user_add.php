@@ -70,9 +70,9 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">图像上传：</label>
+                        <label class="layui-form-label">头像上传：</label>
                         <div class="layui-input-block" >
-                            <input id="upload-file" type="file" name="head_image" class="layui-upload-file">
+                            <input id="upload-file" type="file" name="image" class="layui-upload-file">
                             <?php if (!empty($model->head_image)){?>
                                 <img id="imgId" src="<?=$model->head_image?>" alt="未找到该图片" class="show">
                             <?php }else{?>
@@ -82,7 +82,7 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
                     </div>
                 </div>
                 <div class="layui-tab-item">
-                    <input type="hidden" id="head_image" name="UserForm[head_image]" value="<?=$model->head_image?>">
+                    <input type="hidden" id="upimage" name="UserForm[head_image]" value="<?=$model->head_image?>">
                 </div>
             </div>
         </div>
@@ -139,7 +139,7 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
                 , 'image' //插入图片
             ],
             height: 100
-        })
+        });
         //全选
         form.on('checkbox(allChoose)', function(data) {
             var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
@@ -156,7 +156,6 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
                 $("#imgId").removeClass("hide").addClass("show");
                 $("#head_image").val(res.data);
                 $("#imgId").attr("src",res.data);
-                console.log(res); //上传成功返回值，必须为json格式
             },
         });
     });
