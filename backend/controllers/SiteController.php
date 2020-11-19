@@ -3,6 +3,8 @@ namespace backend\controllers;
 
 use common\controllers\BackendController;
 use common\controllers\CaptchaController;
+use common\event\LoginEvent;
+use common\models\Role;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;

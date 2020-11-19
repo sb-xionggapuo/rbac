@@ -1,10 +1,11 @@
 <?php
 namespace frontend\controllers;
 
-use common\controllers\CaptchaController;
+use frontend\component\Msg;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
+use yii\base\Event;
 use yii\base\InvalidArgumentException;
 use yii\captcha\CaptchaAction;
 use yii\web\BadRequestHttpException;
@@ -259,5 +260,15 @@ class SiteController extends Controller
         return $this->render('resendVerificationEmail', [
             'model' => $model
         ]);
+    }
+    
+    public function actionTestComponent(){
+       Event::on(Msg::class,Msg::EVENT_HANDLE,function ($event){
+           var_dump($event->data);
+       },"abc");
+        $component  = new Msg();
+        $msg = new \frontend\event\Msg();
+        $msg->msg = "我是事件";
+        $component->trigger(Msg::EVENT_HANDLE,$msg);
     }
 }

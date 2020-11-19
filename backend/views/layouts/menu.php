@@ -59,6 +59,7 @@ use \yii\helpers\Url;
                     <dd><a href="<?=Url::to(['/sy-set/seo-set'])?>"><span class="l-line"></span>SEO设置</a></dd>
                     <dd><a href="<?=Url::to(['/role/index'])?>"><span class="l-line"></span>角色管理</a></dd>
                     <dd><a href="<?=Url::to(['/backup'])?>"><span class="l-line"></span>数据备份</a></dd>
+                    <dd><a href="<?=Url::to(['/backup'])?>"><span class="l-line"></span>网站日志</a></dd>
                 </dl>
             </li>
         </ul>

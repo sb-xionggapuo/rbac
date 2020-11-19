@@ -11,6 +11,12 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
+    'on beforeRequest' => function($event){
+        \yii\base\Event::on(\yii\db\ActiveRecord::class,\yii\db\ActiveRecord::EVENT_AFTER_DELETE,[\common\rbac\log::class,"write"]);
+        \yii\base\Event::on(\yii\db\ActiveRecord::class,\yii\db\ActiveRecord::EVENT_AFTER_INSERT,[\common\rbac\log::class,"write"]);
+        \yii\base\Event::on(\yii\db\ActiveRecord::class,\yii\db\ActiveRecord::EVENT_AFTER_UPDATE,[\common\rbac\log::class,"write"]);
+        \yii\base\Event::on(\common\models\LoginForm::class,\common\models\LoginForm::EVENT_AFTER_LOGIN,[\common\rbac\log::class,"write"]);
+    },
     'modules' => [
             'backup' => [
                 'class' => \spanjeta\modules\backup\Module::class,

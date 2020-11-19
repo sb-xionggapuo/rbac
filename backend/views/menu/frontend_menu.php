@@ -11,7 +11,7 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
         <button id="menu-add" class="layui-btn layui-btn-small layui-btn-normal addBtn hidden-xs"><i class="layui-icon">&#xe654;</i></button>
         <button class="layui-btn layui-btn-small layui-btn-danger delBtn hidden-xs"><i class="layui-icon">&#xe640;</i></button>
     </div>
-    <div class="layui-form" id="table-list" style="overflow:scroll;width:100%;height: 800px;">
+    <div class="layui-form" id="table-list" style="overflow-y:scroll;width:100%;height: 800px;">
         <table class="layui-table" lay-skin="line">
             <colgroup>
                 <col width="50">

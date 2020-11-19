@@ -9,6 +9,7 @@ use yii\base\Model;
  */
 class LoginForm extends Model
 {
+    const EVENT_AFTER_LOGIN = "afterLogin";
     public $username;
     public $password;
     public $rememberMe = true;
@@ -68,8 +69,9 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-            if (!$this->_user->UpLast())return false;
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+            $flag = Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+            $this->trigger(LoginForm::EVENT_AFTER_LOGIN);
+            return $flag&&$this->_user->UpLast();
         }
         return false;
     }
