@@ -14,7 +14,6 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
         <?php $form = ActiveForm::begin([
             'options' => ['class' => 'layui-form','id'=>'form1','enctype'=>"multipart/form-data",'style'=>"width: 90%;padding-top: 20px;"]
         ])?>
-
         <div class="layui-form-item">
             <label class="layui-form-label">上级：</label>
             <div class="layui-input-block">
@@ -73,7 +72,7 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
     <input type="hidden" id="csrf" value="<?=Yii::$app->request->csrfToken?>">
     <?php ActiveForm::end();?>
 </div>
-
+<?php $this->beginBlock('js');?>
 <script>
     layui.config({
         base: '<?=$baseUrl?>/layui/lay/modules/',
@@ -113,8 +112,5 @@ $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
             }
         });
     });
-</script>
-<?php $this->beginBlock('js');?>
-<script>
 </script>
 <?php $this->endBlock();?>

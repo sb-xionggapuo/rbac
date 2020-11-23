@@ -26,4 +26,7 @@ class SySetController extends Controller
             "model"=>$model
         ]);
     }
+    public function actionTest(){
+        return $this->render("test");
+    }
 }

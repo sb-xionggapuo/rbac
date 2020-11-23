@@ -1,8 +1,23 @@
 <?php
 use \yii\helpers\Html;
 use \yii\helpers\Url;
-/* @var $content string */
+    /* @var $content string */
     $baseUrl = \backend\assets\MenuAsset::register($this)->baseUrl;
+    $cache = Yii::$app->cache;
+    $web = $cache->get("web");
+    if($web == false){
+        $dependency = new \yii\caching\DbDependency(['sql'=>"select * from `web_system`"]);
+        $web = (new \yii\db\Query())->from("web_system")->one();
+        $cache->set("web",$web,24*3600,$dependency);
+    }
+
+    $role = $cache->get("role");
+    $id = Yii::$app->user->getId();
+    if ($role == false){
+        $dependency = new \yii\caching\DbDependency(['sql'=>"select * from `user` where `id` = $id"]);
+        $role = \common\models\Role::findOne(Yii::$app->user->identity->role_id);
+        $cache->set("role",$role);
+    }
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -10,10 +25,12 @@ use \yii\helpers\Url;
 <head>
     <meta charset="<?php Yii::$app->charset?>">
     <meta name="renderer" content="webkit">
+    <meta name="keywords" content="<?=$web['seo_keyword']?>">
+    <meta name="description" content="<?=$web['seo_desc']?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <?php $this->registerCsrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <?php $this->registerCsrfMetaTags()?>
+    <title><?= Html::encode($this->title) ?>-<?= Html::encode($web['web_title'])?></title>
     <?php $this->head() ?>
     <link rel="stylesheet" type="text/css" href="<?=$baseUrl?>/layui/css/layui.css"/>
     <link rel="stylesheet" type="text/css" href="<?=$baseUrl?>/css/admin.css"/>
@@ -47,19 +64,13 @@ use \yii\helpers\Url;
                 </dl>
             </li>
             <li class="layui-nav-item">
-
-            </li>
-            <li class="layui-nav-item">
-
-            </li>
-            <li class="layui-nav-item">
                 <a href="javascript:;"><i class="layui-icon">&#xe631;</i>&nbsp;&nbsp;设置</a>
                 <dl class="layui-nav-child">
                     <dd><a href="<?=Url::to(['/sy-set/web-set'])?>"><span class="l-line"></span>网站信息</a></dd>
                     <dd><a href="<?=Url::to(['/sy-set/seo-set'])?>"><span class="l-line"></span>SEO设置</a></dd>
                     <dd><a href="<?=Url::to(['/role/index'])?>"><span class="l-line"></span>角色管理</a></dd>
                     <dd><a href="<?=Url::to(['/backup'])?>"><span class="l-line"></span>数据备份</a></dd>
-                    <dd><a href="<?=Url::to(['/backup'])?>"><span class="l-line"></span>网站日志</a></dd>
+                    <dd><a href="<?=Url::to(['/log/index'])?>"><span class="l-line"></span>网站日志</a></dd>
                 </dl>
             </li>
         </ul>
@@ -76,7 +87,7 @@ use \yii\helpers\Url;
             <ul class="layui-nav" lay-filter="rightNav">
                 <li class="layui-nav-item"><a href="javascript:;" data-url="email.html" data-id='4' data-text="邮件系统"><i class="iconfont">&#xe603;</i></a></li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;" data-url="admin-info.html" data-id='5' data-text="个人信息">超级管理员</a>
+                    <a href="javascript:;"  data-id='5' data-text="个人信息"><?=$role->name?></a>
                 </li>
                 <li class="layui-nav-item"><a href="<?=\yii\helpers\Url::to(['site/logout'])?>">退出</a></li>
             </ul>
