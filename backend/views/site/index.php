@@ -53,7 +53,7 @@ $this->params['tab'] = '后台主页';
                 <div class="panel-body clearfix">
                     <div class="col-md-2">
                         <p class="title">服务器环境</p>
-                        <span class="info">Apache/2.4.4 (Win32) PHP/5.4.16</span>
+                        <span class="info"><?=PHP_SAPI?> (Win32) PHP/<?=PHP_VERSION?></span>
                     </div>
                     <div class="col-md-2">
                         <p class="title">服务器IP地址</p>

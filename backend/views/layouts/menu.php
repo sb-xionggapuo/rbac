@@ -10,14 +10,7 @@ use \yii\helpers\Url;
         $web = (new \yii\db\Query())->from("web_system")->one();
         $cache->set("web",$web,24*3600,$dependency);
     }
-
-    $role = $cache->get("role");
-    $id = Yii::$app->user->getId();
-    if ($role == false){
-        $dependency = new \yii\caching\DbDependency(['sql'=>"select * from `user` where `id` = $id"]);
-        $role = \common\models\Role::findOne(Yii::$app->user->identity->role_id);
-        $cache->set("role",$role);
-    }
+    $role = \common\models\Role::findOne(Yii::$app->user->identity->role_id);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -87,7 +80,7 @@ use \yii\helpers\Url;
             <ul class="layui-nav" lay-filter="rightNav">
                 <li class="layui-nav-item"><a href="javascript:;" data-url="email.html" data-id='4' data-text="邮件系统"><i class="iconfont">&#xe603;</i></a></li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;"  data-id='5' data-text="个人信息"><?=$role->name?></a>
+                    <a href="javascript:;"  data-id='5' data-text="个人信息"><?=$role->name??"超级管理员"?></a>
                 </li>
                 <li class="layui-nav-item"><a href="<?=\yii\helpers\Url::to(['site/logout'])?>">退出</a></li>
             </ul>
